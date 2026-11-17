@@ -1,9 +1,12 @@
+import Accommodation from "./accommodation";
+
 class City {
   #cityName!: string;
   #country!: string;
   #dateFrom!: Date;
   #dateTo!: Date;
   #notes: string = "";
+  #accommodation?: Accommodation;
 
   constructor(
     cityName: unknown,
@@ -111,6 +114,17 @@ class City {
     }
     if (dateToParsed < dateFromParsed)
       throw new Error("dateTo cannot be earlier than dateFrom");
+  }
+
+  addAccommodation(accommodation: Accommodation): void {
+    if (!(accommodation instanceof Accommodation)) {
+      throw new Error("Accommodation must be an Accommodation instance");
+    }
+    this.#accommodation = accommodation;
+  }
+
+  getAccommodation(): Accommodation | undefined {
+    return this.#accommodation;
   }
 
   private parseDate(value: unknown): Date {

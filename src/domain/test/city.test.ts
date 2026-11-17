@@ -1,5 +1,6 @@
 import { describe, beforeEach, test, expect } from "vitest";
 import City, { calculateDurationDays } from "../city.ts";
+import Accommodation from "../accommodation.ts";
 
 function createCity(): City {
   return new City(
@@ -127,6 +128,33 @@ describe("City notes", () => {
 
   test("should get notes correctly", () => {
     expect(city.getNotes()).toBe("Notas");
+  });
+});
+
+describe("City accommodation", () => {
+  let city: City;
+  beforeEach(() => {
+    city = createCity();
+  });
+
+  test("should associate one accommodation with the city", () => {
+    const accommodation = new Accommodation("Hotel", 100);
+    city.addAccommodation(accommodation);
+    expect(city.getAccommodation()).toBe(accommodation);
+  });
+
+  test("should keep a single accommodation when another is added", () => {
+    const first = new Accommodation("First Hotel", 100);
+    const second = new Accommodation("Second Hotel", 150);
+    city.addAccommodation(first);
+    city.addAccommodation(second);
+    expect(city.getAccommodation()).toBe(second);
+  });
+
+  test("should reject a value that is not an Accommodation", () => {
+    expect(() => city.addAccommodation(null as unknown as Accommodation)).toThrow(
+      "Accommodation must be an Accommodation instance",
+    );
   });
 });
 
